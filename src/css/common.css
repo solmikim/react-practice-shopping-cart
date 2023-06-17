@@ -1,0 +1,13 @@
+* {
+    box-sizing: border-box;
+    margin : 0;
+}
+
+body {
+    width : 100%;
+    height: 100%;
+    background-color: white;
+    font-family: 'campton', 'Apple SD Gothic Neo', NanumBarunGothic, '나눔바른고딕', Malgun Gothic, '맑은 고딕', dotum, sans-serif;
+    font-size: 14px;
+    color : black;
+}

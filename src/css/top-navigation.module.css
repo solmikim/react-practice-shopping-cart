@@ -1,0 +1,52 @@
+.headerTop{
+    border-bottom : 1px solid black;
+    background : url("https://img.29cm.co.kr//next-contents/2023/06/08/3f8131682d124d16b336774ba51c4a3e_20230608162823.png");
+    height : 120px;
+}
+
+.headerNavigationWrapper{
+    background-color: black;
+    height : 35px;
+    color : white;
+}
+
+
+.headerNavigationWrapper div{
+    height: 100%;
+    line-height: initial;
+    display: inline-block;
+}
+
+.headerNavigationWrapper div:nth-child(2){
+    width : 50%;
+}
+
+.headerNavigationWrapper div:nth-child(1),
+.headerNavigationWrapper div:nth-child(3){
+    line-height: initial;
+    height: 100%;
+    width : 25%;
+}
+
+.navigationRight{
+    list-style: none;
+    padding : 0px;
+    height: 35px;
+    line-height: 35px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    position: absolute;
+    right: 60px;
+}
+
+.navigationRight li span{
+    padding-right : 10px;
+}
+
+.navigationRight li:hover{
+    cursor: pointer;
+}
+.shoppingCartIcon{
+    display: inline-block;
+}

@@ -1,0 +1,19 @@
+.footerWrapper {
+    padding : 0 1%;
+    width : 100%;
+    height: 70px;
+    border-top: 1px solid #000000;
+    font-size: 10px;
+    color: #5d5d5d;
+}
+
+.footerWrapper .footerNotice {
+    font-size: 12px;
+    margin-top: 16px;
+    font-weight: 500;
+    color: #000;
+}
+
+.footerWrapper .footerInformation {
+    padding-top : 10px;
+}
