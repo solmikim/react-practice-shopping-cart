@@ -6,9 +6,6 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './store/reducer'
 
-import { ProductPage } from './routes/ProductPage';
-import { ShoppingCartPage } from './routes/ShoppingCartPage';
-
 const store = createStore(reducer);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

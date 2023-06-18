@@ -1,14 +1,13 @@
 import { ADD_SHOPPING_CART, SET_USER, REMOVE_SHOPPING_CART} from '../constants/ReducerActionTypes';
 
-const initialState = {
+const initState = {
     cartItemCount : 0,
     userInformation : null,
 
 }
 
-export default function reducer(state = initialState, action){
+export default function reducer(state = initState, action){
 
-   console.log('reducer!!!!', state.userInformation, action)
     switch(action.type){
         case ADD_SHOPPING_CART : return {
             ...state,

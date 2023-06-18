@@ -11,4 +11,10 @@ export class Product{
     getPrice(){
         return this.price.toLocaleString();
     }
+
+    isSelectedShoppingCart(selectedProducts){
+        if(selectedProducts.length == 0 ) return false;
+
+        return selectedProducts.some((product)=> product === this);
+    }
 }

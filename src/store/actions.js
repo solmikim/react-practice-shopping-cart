@@ -7,14 +7,14 @@ export const setUserInformation = (userInformation) => {
     }
 }
 
-export const addItemToShoppingCart = (item) => {
+export const addProductToShoppingCart = (item) => {
     return {
         type : ADD_SHOPPING_CART,
         payload : item
     }
 }
 
-export const removeToShoppingCart = (item) => {
+export const removeProductToShoppingCart = (item) => {
     return {
         type : REMOVE_SHOPPING_CART,
         payload : item

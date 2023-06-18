@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Pagination = ({ total, limit, page, setPage }) => {
     const numPages = Math.ceil(total / limit);
-    console.log('????? ',total, limit, page, setPage)
+
     return (
       <>
         <Nav>
@@ -38,7 +38,7 @@ export const Pagination = ({ total, limit, page, setPage }) => {
 
 const Button = styled.button`
   border: none;
-  border-radius: 8px;
+  border-radius: 3px;
   padding: 8px;
   margin: 0;
   background: black;
@@ -46,19 +46,21 @@ const Button = styled.button`
   font-size: 1rem;
 
   &:hover {
-    background: tomato;
+    background: rgb(55, 95, 255);
     cursor: pointer;
     transform: translateY(-2px);
   }
 
   &[disabled] {
-    background: grey;
+    background: rgb(228, 228, 228);
     cursor: revert;
     transform: revert;
   }
 
   &[aria-current] {
-    background: deeppink;
+    border : 1px solid black;
+    background: white;
+    color : black;
     font-weight: bold;
     cursor: revert;
     transform: revert;

@@ -55,9 +55,10 @@
 }
 .shoppingCartIcon{
     display: inline-block;
+    color : white;
 }
 
-.test span{
+.shoppingCartIcon span{
     position: absolute;
     padding: 0 6px;
     background: #ff4800;
@@ -72,4 +73,5 @@
     height: 18px;
     font-size: 9px;
     line-height: 18px;
+
 }

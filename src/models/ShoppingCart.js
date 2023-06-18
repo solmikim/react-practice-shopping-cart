@@ -7,7 +7,7 @@ export class ShoppingCart{
         return this.selectedProducts.length;
     }
 
-    hasShoppingBag(item){
+    isProductInCart(item){
         return this.selectedProducts.find((product) => product === item);
     }
 }

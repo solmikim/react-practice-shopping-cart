@@ -9,7 +9,7 @@ import { Coupon } from './models/Coupon';
 import { Product } from './models/Product';
 import { ShoppingCart } from './models/ShoppingCart';
 import {coupons , productItems} from './constants/Product';
-import {setProductItems, getCoupons, setUserInformation} from './store/actions';
+import { setUserInformation } from './store/actions';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
@@ -44,9 +44,8 @@ function App() {
       <Router>
         <TopNavigation></TopNavigation>
           <Routes>
-            {/* <Route path='/' exact={true} Component={ProductPage}></Route> */}
-            <Route path="/products" element={<ProductPage products={initProducts()}/>}></Route>
             <Route path="/" element={<ProductPage products={initProducts()}/>}></Route>
+            <Route path="/products" element={<ProductPage products={initProducts()}/>}></Route>
             <Route path="/cart" element={<ShoppingCartPage/>}></Route>
           </Routes>
         <Footer></Footer>

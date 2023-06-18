@@ -1,15 +1,13 @@
-
+import styles from '../css/shopping-cart.module.css';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styles from '../css/shopping-cart.module.css';
 
 export const ShoppingCartPage = () => {
-    const [isCheckAll, setIsCheckAll] = useState(false);
-    const [isCheckingBox, setIsCheckingBox] = useState(false);
-    const [checkedArr, setCheckedArr] = useState([]);
-    const [tottalPrice, setTotalPrice] = useState(0);
-    const [totalPaymentPrice, setPaymentPrice] = useState(0);
+    const [isCheckedAll, setIsCheckedAll] = useState(false);
+    const [checkedItems, setCheckedItems] = useState([]);
+    const [totalOrderPrice, setTotalOrderPrice] = useState(0);
+    const [totalTotalPaymentPrice, setTotalPaymentPrice] = useState(0);
 
     const user = useSelector(state => state.userInformation);
     const [shoppingCartItems, setShoppingCartItems] = useState(user ?  user.shoppingCart.selectedProducts : []);
@@ -17,167 +15,176 @@ export const ShoppingCartPage = () => {
     const [selectedCoupon, setSelectedCoupon] = useState(user ? user.coupons[0] : '');
 
     const calculateTotalOrderAmount = () => {
-        if(checkedArr.length == 0 ){
-            setTotalPrice(0);
+        if(checkedItems.length == 0 ){
+            setTotalOrderPrice(0);
         }else {
-            const price = checkedArr.reduce((sum, currentValue) => {return sum + currentValue.price}, 0);
-            setTotalPrice(price.toLocaleString());
+            const price = checkedItems.reduce((sum, currentValue) => {return sum + currentValue.price}, 0);
+            setTotalOrderPrice(price.toLocaleString());
         }
     }
 
     const onChangeSelectedCoupon = (e) => {
-        const coupon = coupons.find(coupon => coupon.title === e.target.value)
+        const coupon = coupons.find(coupon => coupon.title === e.target.value);
         setSelectedCoupon(coupon);
     }
 
-    const setTotalPaymentPrice = () => {
-        if(checkedArr.length === 0) {
-            setPaymentPrice(0);
+    const calculateTotalPaymentPrice = () => {
+        if(checkedItems.length === 0) {
+            setTotalPaymentPrice(0);
             return;
         }
 
         const deliveryPrice = 3000;
-        const nonCouponableItem = checkedArr.filter(item => !item.availableCoupon);
+        const nonCouponableItem = checkedItems.filter(item => !item.availableCoupon);
         const nonCouponableItemPrice = nonCouponableItem.reduce((sum, currentValue) => {return sum + currentValue.price}, 0);
-        const couponableItem = checkedArr.filter(item => item.availableCoupon);
+        const couponableItem = checkedItems.filter(item => item.availableCoupon);
         const couponableItemPrice = couponableItem.reduce((sum, currentValue) => {return sum + currentValue.price}, 0);
 
         switch(selectedCoupon.type){
             case 'rate' : {
                 const price =  (couponableItemPrice - (couponableItemPrice * (selectedCoupon.discountValue / 100))) + nonCouponableItemPrice + deliveryPrice;
-                setPaymentPrice(price.toLocaleString());
-                console.log('비율 계산 : ', price)
+                setTotalPaymentPrice(price.toLocaleString());
                 break;
             }
 
             case 'amount' : {
-                const price =  (couponableItemPrice - selectedCoupon.discountValue) + nonCouponableItemPrice + deliveryPrice;
-                setPaymentPrice(price.toLocaleString());
-                console.log('amount 계산 : ', price);
+                const discountedPrice = couponableItemPrice - selectedCoupon.discountValue;
+                const price =  discountedPrice > 0 ? discountedPrice + nonCouponableItemPrice + deliveryPrice : nonCouponableItemPrice + deliveryPrice;
+
+                setTotalPaymentPrice(price.toLocaleString());
 
             }
         }
     }
 
-    //console.log('user : ', shoppingCartItems)
-    const changeAllCheck = async (e) => {
+    const checkAllProducts = async (e) => {
         if (e.target.checked) {
-          setIsCheckAll(true);
-          setCheckedArr(shoppingCartItems);
+          setIsCheckedAll(true);
+          setCheckedItems(shoppingCartItems);
         } else {
-          setIsCheckAll(false)
-          setCheckedArr([])
+          setIsCheckedAll(false)
+          setCheckedItems([])
         }
     }
     
-      const checkingCheckedBox = (e, product) => {
-        setIsCheckAll(false);
-        setIsCheckingBox(true);
+      const checkSelectedProduct = (e, product) => {
+        setIsCheckedAll(false);
         
-        if(checkedArr.find(arr => arr === product)){
-            setCheckedArr(checkedArr.filter(arr => arr !== product))
+        if(checkedItems.find(arr => arr === product)){
+            setCheckedItems(checkedItems.filter(arr => arr !== product))
         }else {
-            setCheckedArr((preCheckedArr) => [...preCheckedArr, product]);
-            console.log('checkingCheckedBox ', checkedArr)
+            setCheckedItems((preCheckedItems) => [...preCheckedItems, product]);
         }
       }
     
       useEffect(() => {
-        if (checkedArr.length !== 0 && checkedArr.length === shoppingCartItems.length) {
-          setIsCheckAll(true)
+        if (checkedItems.length !== 0 && checkedItems.length === shoppingCartItems.length) {
+          setIsCheckedAll(true)
         }
-        console.log('** 변화 감지 ', checkedArr)
+
         calculateTotalOrderAmount();
-        setTotalPaymentPrice();
-      }, [checkedArr, selectedCoupon])
+        calculateTotalPaymentPrice();
+      }, [checkedItems, selectedCoupon])
     
     
     return (
         <div>
             <div className={styles.shoppingCartWrapper}>
-                <div className={styles.shoppingCartTitle}>01 SHOPPING BAG</div>
-                <div className={styles.shoppingCartListWrapper}>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>
-                                    <input type='checkbox' onClick={ e => changeAllCheck(e)} checked={isCheckAll}/>
-                                </th>
-                                <th>상품 정보</th>
-                                <th>수량</th>
-                                <th>주문 금액</th>
-                                <th>배송비</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {
-                                shoppingCartItems.map(product => {
-                                    return (
+                {
+                    shoppingCartItems && shoppingCartItems.length == 0 ? 
+                    (   <>
+                            <div className={styles.shoppingCartEmptyMessageWrapper}>
+                                <div className={styles.shoppingCartEmptyMessage}>! 장바구니에 담은 상품이 없습니다.</div>
+                            </div>                
+                        </>
+                    )
+                    : (
+                        <>
+                            <div className={styles.shoppingCartTitle}>01 SHOPPING BAG</div>
+                            <div className={styles.shoppingCartListWrapper}>
+                                <table>
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <input type='checkbox' onClick={e => checkingCheckedBox(e, product)}/>
-                                            </td>
-                                            <td className={styles.productInfo}>
-                                                <div className={styles.productImage}><img src={product.imageUrl}/></div>
-                                                <div className={styles.productDetail}>
-                                                    <div>{product.name}</div>
-                                                    <div>{product.getPrice()}원</div>
-                                                </div>
-                                            </td>
-                                            <td>수량</td>
-                                            <td>{product.getPrice()}원</td>
-                                            <td>3,000원</td>
+                                            <th>
+                                                <input type='checkbox' onChange={ e => checkAllProducts(e)} checked={isCheckedAll}/>
+                                            </th>
+                                            <th>상품 정보</th>
+                                            <th>수량</th>
+                                            <th>주문 금액</th>
+                                            <th>배송비</th>
                                         </tr>
-                                    )
-                                })
-                            }
+                                    </thead>
 
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className={styles.totalPriceWrapper}>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>총 주문 금액</th>
-                                <th>배송비</th>
-                                <th>쿠폰</th>
-                                <th>총 결제 금액</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    {tottalPrice} 원
-                                </td>
-                                <td> + 3,000 원</td>
-                                <td>
-                                    -
-                                    <select value={selectedCoupon.title} onChange={onChangeSelectedCoupon}>
+                                    <tbody>
                                         {
-                                            coupons.map((coupon, index) => {
+                                            shoppingCartItems.map(product => {
                                                 return (
-                                                    <option value={coupon.title} key={index} >{coupon.title}</option>
+                                                    <tr key={product.no}>
+                                                        <td>
+                                                            <input type='checkbox' checked={product.isSelectedShoppingCart(checkedItems)} onChange={e => checkSelectedProduct(e, product)}/>
+                                                        </td>
+                                                        <td className={styles.productInfo}>
+                                                            <div className={styles.productImage}><img src={product.imageUrl}/></div>
+                                                            <div className={styles.productDetail}>
+                                                                <div>{product.name}</div>
+                                                                <div>{product.getPrice()}원</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>수량</td>
+                                                        <td>{product.getPrice()}원</td>
+                                                        <td>3,000원</td>
+                                                    </tr>
                                                 )
                                             })
                                         }
-                                        
-                                    </select>
-                                </td>
-                                <td>{totalPaymentPrice}원</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
 
-                <div className={styles.buttons}>
-                    <div><Link to='/products'>CONTINUE SHOPPING</Link></div>
-                    <div><button>CHECK OUT</button></div>
-                </div>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className={styles.totalPriceWrapper}>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>총 주문 금액</th>
+                                            <th>배송비</th>
+                                            <th>쿠폰</th>
+                                            <th>총 결제 금액</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {totalOrderPrice} 원
+                                            </td>
+                                            <td> + 3,000 원</td>
+                                            <td>
+                                                -
+                                                <select value={selectedCoupon.title} onChange={onChangeSelectedCoupon}>
+                                                    {
+                                                        coupons.map((coupon, index) => {
+                                                            return (
+                                                                <option value={coupon.title} key={index} >{coupon.title}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                    
+                                                </select>
+                                            </td>
+                                            <td>{totalTotalPaymentPrice}원</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className={styles.buttons}>
+                                <div><Link to='/products'>CONTINUE SHOPPING</Link></div>
+                                <div><button>CHECK OUT</button></div>
+                            </div>
+                        </>
+                    )
+                }
             </div>
-            
         </div>
     )
 }
