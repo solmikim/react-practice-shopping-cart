@@ -1,5 +1,5 @@
 ## 프로젝트 명.
-29cm-project
+29cm-project :straight_ruler:
 
 ## 실행 방법.
 npm run start
