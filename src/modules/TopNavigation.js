@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from 'react-redux';
 import {useEffect, useState} from 'react'
 import { Link } from "react-router-dom";
+import { ShoppingCartPage } from '../routes/ShoppingCartPage';
 
 export const TopNavigation = () => {
     const cartItemCount = useSelector((state) => state.cartItemCount);
@@ -19,7 +20,7 @@ export const TopNavigation = () => {
                     <div>
                         <ul className={styles.navigationRight}>
                             <li>
-                                <span><Link to="/cart">Shopping Cart</Link></span>
+                                <span><Link to='/cart'>Shopping Cart</Link></span>
                                 
                             </li>
                             <li className={styles.test}>

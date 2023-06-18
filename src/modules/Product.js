@@ -11,7 +11,7 @@ export const Product = ({product}) => { // 내림차순으로 헤야함
     
     const addToShoppingCart = (product) => {
         console.log('addShoppingCart ', user.shoppingCart.hasShoppingBag(product))
-        if(!user || user.shoppingCart.hasShoppingBag(product)) return;
+        if(!user || user.shoppingCart.hasShoppingBag(product) || user.shoppingCart.getCartItemCount() == 3) return;
         
         user.shoppingCart.selectedProducts.push(product);
         dispatch(addItemToShoppingCart(user.shoppingCart.getCartItemCount()));
