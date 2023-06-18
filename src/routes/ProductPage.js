@@ -1,20 +1,42 @@
 import styles from '../css/products-page.module.css';
-import {productSortList} from '../constants/Product';
+import {productSortList, sortListInternalValue} from '../constants/Product';
 import { Product } from '../modules/Product';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Pagination} from '../modules/Pagination';
 
 export const ProductPage = ({products}) => {
     const [limit, setLimit] = useState(5);
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
-    //console.log('products ', products)    
+
+    const [sortedKey, setSortedKey] = useState(sortListInternalValue.SCORE);
+    const [productItems, setProductItems] = useState(products);
+
+    const handleSortChange = (e) => {
+        setSortedKey(e.target.value);
+    }
+
+    const sortProducts = () => {
+        switch(sortedKey){
+            case sortListInternalValue.SCORE: {
+                setProductItems(productItems.sort(function (productA, productB) {
+                    return productA.score - productB.score;
+                  }))
+
+                break;
+            }
+        }
+    }
+
+    useEffect(()=>{
+        sortProducts();
+    }, [sortedKey])
 
     return (
         <div>
             <div className={styles.productWrapper}>
                 <div className={styles.productSort}>
-                    <select>
+                    <select onChange={handleSortChange} value={sortedKey}>
                     {
                         productSortList.map(product => {
                             return ( 
@@ -26,14 +48,14 @@ export const ProductPage = ({products}) => {
                 </div>
                 <div className={styles.products}>
                     {
-                        products.slice(offset, offset + limit).map(product => {
+                        productItems.slice(offset, offset + limit).map(product => {
                             return (
-                                <Product product={product}></Product>
+                                <Product product={product} key={product.no}></Product>
                             )
                         })
                     }
                     <footer>
-                        <Pagination total={products.length} limit={limit} page={page} setPage={setPage}></Pagination>
+                        <Pagination total={productItems.length} limit={limit} page={page} setPage={setPage}></Pagination>
                     </footer>
                 </div>
 

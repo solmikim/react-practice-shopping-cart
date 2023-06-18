@@ -1,8 +1,14 @@
+
 import styles from '../css/top-navigation.module.css';
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from 'react-redux';
+import {useEffect, useState} from 'react'
+import { Link } from "react-router-dom";
 
 export const TopNavigation = () => {
+    const cartItemCount = useSelector((state) => state.cartItemCount);
+
     return (
         <div>
             <header>
@@ -13,8 +19,12 @@ export const TopNavigation = () => {
                     <div>
                         <ul className={styles.navigationRight}>
                             <li>
-                                <span>Shopping Cart</span>
+                                <span><Link to="/cart">Shopping Cart</Link></span>
+                                
+                            </li>
+                            <li className={styles.test}>
                                 <FontAwesomeIcon icon={faCartShopping} className={styles.shoppingCartIcon}/>
+                                <span>{cartItemCount}</span>
                             </li>
                         </ul>
 

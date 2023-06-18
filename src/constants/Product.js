@@ -1,5 +1,9 @@
+export const sortListInternalValue = {
+  SCORE : 'score'
+}
+
 export const productSortList = [
-    { internalValue : 'score', displayName : '인기순'}
+    { internalValue : sortListInternalValue.SCORE, displayName : '인기순'}
 ]
 
 export const productItems = [

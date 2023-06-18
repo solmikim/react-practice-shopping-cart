@@ -1,22 +1,28 @@
-import { ADD_COUPONS, ADD_PRODUCT_ITEMS, ADD_SHOPPING_BAG, SET_USER} from '../constants/ReducerActionTypes';
+import { ADD_SHOPPING_CART, SET_USER, REMOVE_SHOPPING_CART} from '../constants/ReducerActionTypes';
 
-const initState = {
-    coupons : null,
-    products : null,
-    userInformation : null
+const initialState = {
+    cartItemCount : 0,
+    userInformation : null,
+
 }
 
-export default function reducer(currentState = initState, action){
+export default function reducer(state = initialState, action){
 
-//    console.log('reducer!!!!', currentState, action)
+   console.log('reducer!!!!', state.userInformation, action)
     switch(action.type){
-        case ADD_PRODUCT_ITEMS: {
-            currentState.products = action.payload;
+        case ADD_SHOPPING_CART : return {
+            ...state,
+            cartItemCount : action.payload
         }
-        case SET_USER : {
-            currentState.userInformation = action.payload;
+        case REMOVE_SHOPPING_CART : return {
+            ...state,
+            cartItemCount : action.payload
+        }
+        case SET_USER : return {
+            ...state,
+            userInformation : action.payload
         }
     }
     
-    return currentState;
+    return state;
   }

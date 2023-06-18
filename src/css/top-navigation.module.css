@@ -1,7 +1,7 @@
 .headerTop{
     border-bottom : 1px solid black;
     background : url("https://img.29cm.co.kr//next-contents/2023/06/08/3f8131682d124d16b336774ba51c4a3e_20230608162823.png");
-    height : 120px;
+    height : 80px;
 }
 
 .headerNavigationWrapper{
@@ -38,10 +38,16 @@
     align-items: center;
     position: absolute;
     right: 60px;
+
 }
 
 .navigationRight li span{
     padding-right : 10px;
+}
+
+.navigationRight li span a {
+    color : white;
+    text-decoration: none;
 }
 
 .navigationRight li:hover{
@@ -49,4 +55,21 @@
 }
 .shoppingCartIcon{
     display: inline-block;
+}
+
+.test span{
+    position: absolute;
+    padding: 0 6px;
+    background: #ff4800;
+    text-align: center;
+    color: #fff;
+    border-radius: 13px;
+    box-sizing: border-box;
+
+    width : 10px;
+    top: 3px;
+    min-width: 18px;
+    height: 18px;
+    font-size: 9px;
+    line-height: 18px;
 }
